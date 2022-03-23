@@ -1,20 +1,16 @@
 #include <iostream>
-#include <chrono>
 
-#include "arrays.hh"
+#include "arr_manag.hh"
+
+#define ARR_SIZE 1000000
+
 
 int main() {
-    auto t_start = std::chrono::steady_clock::now();
-    
 
-    SrtArr<int, 1000> first;
-    std::cout << first[2] << std::endl;
+    const int arrSize[] = {10000, 10000, 50000, 100000, 500000, 1000000};
+    const int sortLvl[] = {300, -1000, 250, 500, 750, 950, 990, 997}; //sort level per mil
 
-    
-    auto t_end = std::chrono::steady_clock::now();
-    auto duration_t = t_end - t_start;
-    std::cout << "\tDuration time: " << std::chrono::duration <double> (duration_t).count() << "s\n";
-
+    RunTest(arrSize[0], sortLvl[0]);
 
     return 0;
 }

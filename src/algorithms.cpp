@@ -86,3 +86,30 @@ void quickSort(int* arr, int start, int end) {
         quickSort(arr, pivot+1, end);
     }
 }
+
+void heapify(int* arr, int size, int idx) {
+
+    int max = idx, leftChild = 2*idx+1, rightChild = 2*idx+2;
+    
+    if (leftChild < size && arr[idx] < arr[leftChild])
+        max = leftChild;
+
+    if (rightChild < size && arr[max] < arr[rightChild])
+        max = rightChild;
+
+    if (max!=idx) {
+        swap(&arr[idx], &arr[max]);
+        heapify(arr, size, max);
+    }
+}
+
+void heapSort(int* arr, int size) {
+    for (int i=size/2-1; i>=0; --i)
+        heapify(arr, size, i);
+
+    for (int i=size-1; i>=0; --i) {
+        swap(&arr[0], &arr[i]);
+        --size;
+        heapify(arr, size, 0);
+    }
+}

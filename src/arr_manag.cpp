@@ -14,7 +14,7 @@ bool RunTest(int noElems, float sortLvl) {
         }
 
         auto t_start = std::chrono::steady_clock::now();
-        quickSort(sortArr, 0, noElems-1);
+        heapSort(sortArr, noElems);
         auto t_end = std::chrono::steady_clock::now();
 
         if(SHOW_ARRAY) {

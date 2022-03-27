@@ -7,8 +7,8 @@
 
 int main() {
 
-    const int arrSize[] = {10000, 10000, 50000, 100000, 500000, 1000000};
-    const int sortLvl[] = {300, -1000, 250, 500, 750, 950, 990, 997}; //sort level per mil
+    const int arrSize[] = {100, 10000, 50000, 100000, 500000, 1000000};
+    const float sortLvl[] = {-50, -100, 25, 50, 75, 95, 99, 99.7}; //sort level percentage
 
     RunTest(arrSize[0], sortLvl[0]);
 

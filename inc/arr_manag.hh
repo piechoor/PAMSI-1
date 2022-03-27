@@ -1,14 +1,15 @@
 #pragma once
 #include <chrono>
 #include <iostream>
+#include <algorithm>
+#include <fstream>
 
 #define REGISTER_FILE "register.txt"
+#define REG_FORM 'H' //H for human; E for excel
 
-bool RunTest(unsigned int noElems, int sortLvl);
+bool RunTest(unsigned int noElems, float sortLvl);
 
-int* InitArr(unsigned int size);
+int* InitArr(unsigned int size, float sortLvl);
 
-void SortToLvl(int arr[], int lvl, int);
-
-bool WriteToReg(int noElems, int sortLvl, float time);
+bool WriteToReg(int noElems, float sortLvl, float time);
 

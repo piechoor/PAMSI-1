@@ -113,27 +113,3 @@ void heapSort(int* arr, int size) {
         heapify(arr, size, 0);
     }
 }
-
-void insertionSort(int* arr, int size) {
-    for (int i=1; i<size; ++i) {
-        int j=i;
-        while (j>0 && arr[j-1] > arr[j]) {
-            swap(&arr[j], &arr[j-1]);
-            --j;
-        }
-    }
-}
-
-void introSort(int* arr, int start, int end, int maxDepth) {
-    int size = end-start;
-    
-    if (maxDepth<=0 && start < end) {
-        heapSort(arr, size);
-        std::cout << "Size" << size << std::endl;}
-    else
-        if (start < end) {
-            int pivot = partition(arr, start, end);
-            introSort(arr, start, pivot-1, maxDepth-1);
-            introSort(arr, pivot+1, end, maxDepth-1);
-    }
-}

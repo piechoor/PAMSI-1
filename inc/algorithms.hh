@@ -13,3 +13,5 @@ void quickSort(int* arr, int start, int end);
 //HEAPSORT
 void heapify(int* arr, int size, int idx);
 void heapSort(int* arr, int size);
+//INSERTION
+void insertionSort(int* arr, int size);

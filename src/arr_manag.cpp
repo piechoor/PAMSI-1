@@ -14,7 +14,12 @@ bool RunTest(int noElems, float sortLvl) {
         }
 
         auto t_start = std::chrono::steady_clock::now();
-        insertionSort(sortArr, noElems);
+        //insertionSort(sortArr, noElems);
+        introSort(sortArr, 0, noElems, floor(log2(noElems))*2);
+        //quickSort(sortArr, 0, noElems-1);
+        //mergeSort(sortArr, 0, noElems-1);
+        //heapSort(sortArr, noElems);
+
         auto t_end = std::chrono::steady_clock::now();
 
         if(SHOW_ARRAY) {

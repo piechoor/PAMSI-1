@@ -123,3 +123,17 @@ void insertionSort(int* arr, int size) {
         }
     }
 }
+
+void introSort(int* arr, int start, int end, int maxDepth) {
+    int size = end-start;
+    
+    if (maxDepth<=0 && start < end) {
+        heapSort(arr, size);
+        std::cout << "Size" << size << std::endl;}
+    else
+        if (start < end) {
+            int pivot = partition(arr, start, end);
+            introSort(arr, start, pivot-1, maxDepth-1);
+            introSort(arr, pivot+1, end, maxDepth-1);
+    }
+}

@@ -1,5 +1,11 @@
 #include "algorithms.hh"
 
+void swap(int *a, int *b) {
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
 void merge(int* arr, int start, int mid, int end)
 {
     //temp arrays' lenghts
@@ -10,9 +16,9 @@ void merge(int* arr, int start, int mid, int end)
     int *rightArr = new int[lenRight]; 
   
     //copying to temp arrays
-    for (int i = 0; i<lenLeft; ++i)
+    for (int i=0; i<lenLeft; ++i)
         leftArr[i] = arr[start+i];
-    for (int i = 0; i<lenRight; ++i)
+    for (int i=0; i<lenRight; ++i)
         rightArr[i] = arr[mid+i+1];
   
     int iterLeft = 0, iterRight = 0, iterArr = start; //iterators for each of arryas 
@@ -41,15 +47,42 @@ void merge(int* arr, int start, int mid, int end)
         arr[iterArr] = rightArr[iterRight];
         ++iterArr; ++iterRight;
     }
+
+    delete[] leftArr; delete[] rightArr;
 }
   
-//divides and merges current array recursively  
+//divides and merges passed current array recursively  
 void mergeSort(int* arr, int start, int end)
 {
-    if (start >= end) 
-        return;
-    int mid = (start+end)/2;
-    mergeSort(arr, start, mid);
-    mergeSort(arr, mid+1, end);
-    merge(arr, start, mid, end);
+    if (start < end) {
+        int mid = (start+end)/2;
+        mergeSort(arr, start, mid);
+        mergeSort(arr, mid+1, end);
+        merge(arr, start, mid, end);
+    }
+}
+
+
+int partition(int* arr, int start, int end) {
+    int pivot = arr[end]; //pivot - element thats being use for comparison
+    int beforePivot = start-1; //points at last element smaller/eq than pivot
+
+    for (int i=start; i<end; ++i) {
+        if (arr[i]<=pivot) { //if elem is smaller than pivot put it b4 arr[beforePivot]
+            ++beforePivot;
+            swap(&arr[beforePivot], &arr[i]);
+        }
+    }
+    //puting pivot after all smaller elements
+    swap(&arr[beforePivot+1], &arr[end]);
+    
+    return (beforePivot+1); //returning pivot index
+}
+
+void quickSort(int* arr, int start, int end) {
+    if (start < end) {
+        int pivot = partition(arr, start, end);
+        quickSort(arr, start, pivot-1);
+        quickSort(arr, pivot+1, end);
+    }
 }

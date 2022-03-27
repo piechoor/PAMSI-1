@@ -1,10 +1,10 @@
 #include "arr_manag.hh"
 #include "algorithms.hh"
 
-#define SHOW_ARRAY false
+#define SHOW_ARRAY true
 
 bool RunTest(int noElems, float sortLvl) {
-    for (int i=0; i<100; ++i) {
+    for (int i=0; i<1; ++i) {
         int* sortArr = InitArr(noElems, sortLvl);
 
         if(SHOW_ARRAY) {
@@ -14,7 +14,7 @@ bool RunTest(int noElems, float sortLvl) {
         }
 
         auto t_start = std::chrono::steady_clock::now();
-        mergeSort(sortArr, 0, noElems-1);
+        quickSort(sortArr, 0, noElems-1);
         auto t_end = std::chrono::steady_clock::now();
 
         if(SHOW_ARRAY) {
@@ -70,24 +70,17 @@ int* InitArr(int size, float sortLvl) {
     return tosort;
 }
 
-bool WriteToReg(int noElems, float sortLvl, float time) {
+void WriteToReg(int noElems, float sortLvl, float time) {
     std::ofstream Register(REGISTER_FILE, std::ios_base::app);
 
     int time_s = (int)time;
     int time_ms = (int)((time-time_s)*1000); 
 
-    if (REG_FORM=='H')
+    if (REG_FORM_HUMAN)
         Register << "Size:" << noElems << "\tInitially sorted:" 
                 << (int)sortLvl << "%\tTime:" << time_s << "s " <<
                 time_ms << "ms " << std::endl;
-    else if (REG_FORM=='E')
-        Register << time << std::endl;
-
-    else {
-        Register.close();
-        return false;
-    }
+    else Register << time << std::endl;
 
     Register.close();
-    return true;
 }

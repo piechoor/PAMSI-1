@@ -1,5 +1,11 @@
 #pragma once
 
-void merge(int* arr, int start, int mid, int end);
+void swap(int *a, int *b);
 
+// MERGE SORT
+void merge(int* arr, int start, int mid, int end);
 void mergeSort(int* arr, int start, int end);
+
+//QUICKSORT
+int partition(int* arr, int start, int end);
+void quickSort(int* arr, int start, int end);

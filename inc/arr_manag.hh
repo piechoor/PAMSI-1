@@ -7,9 +7,9 @@
 #define REGISTER_FILE "register.txt"
 #define REG_FORM 'H' //H for human; E for excel
 
-bool RunTest(unsigned int noElems, float sortLvl);
+bool RunTest(int noElems, float sortLvl);
 
-int* InitArr(unsigned int size, float sortLvl);
+int* InitArr(int size, float sortLvl);
 
 bool WriteToReg(int noElems, float sortLvl, float time);
 

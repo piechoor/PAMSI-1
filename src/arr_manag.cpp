@@ -1,24 +1,26 @@
 #include "arr_manag.hh"
 #include "algorithms.hh"
 
-bool RunTest(unsigned int noElems, float sortLvl) {
-    for (int i=0; i<1; ++i) {
+#define SHOW_ARRAY false
+
+bool RunTest(int noElems, float sortLvl) {
+    for (int i=0; i<100; ++i) {
         int* sortArr = InitArr(noElems, sortLvl);
 
-        for (int i=0; i<100; ++i) {
-            std::cout << i+1 << ". " << sortArr[i] << std::endl;
+        if(SHOW_ARRAY) {
+            for (int i=0; i<noElems; ++i) {
+                std::cout << i+1 << ". " << sortArr[i] << std::endl;
+            }
         }
 
         auto t_start = std::chrono::steady_clock::now();
-
-
-            mergeSort(sortArr, 0, noElems-1);
-
-
+        mergeSort(sortArr, 0, noElems-1);
         auto t_end = std::chrono::steady_clock::now();
 
-        for (int i=0; i<100; ++i) {
-            std::cout << i+1 << ". " << sortArr[i] << std::endl;
+        if(SHOW_ARRAY) {
+            for (int i=0; i<noElems; ++i) {
+                std::cout << i+1 << ". " << sortArr[i] << std::endl;
+            }
         }
 
         auto duration_t = t_end - t_start;
@@ -32,7 +34,7 @@ bool RunTest(unsigned int noElems, float sortLvl) {
     return false;
 }
 
-int* InitArr(unsigned int size, float sortLvl) {
+int* InitArr(int size, float sortLvl) {
     srand( (unsigned)time( NULL ) );
     bool reverse = false;
 
@@ -47,12 +49,12 @@ int* InitArr(unsigned int size, float sortLvl) {
     }
 
     int *tosort = new int[size];
-    unsigned int noSorted = sortLvl*size*0.01;
-    for(unsigned int i=0; i<noSorted; ++i) {
+    int noSorted = sortLvl*size*0.01;
+    for(int i=0; i<noSorted; ++i) {
         tosort[i] = -size+i;
     }
-    for(unsigned int i=noSorted; i<size; ++i) {
-        tosort[i] = (rand() % 1000000);
+    for(int i=noSorted; i<size; ++i) {
+        tosort[i] = (rand() % size);
     }
 
     if (reverse) {
@@ -71,14 +73,12 @@ int* InitArr(unsigned int size, float sortLvl) {
 bool WriteToReg(int noElems, float sortLvl, float time) {
     std::ofstream Register(REGISTER_FILE, std::ios_base::app);
 
-    float sortPercent = sortLvl*0.1;
-
     int time_s = (int)time;
     int time_ms = (int)((time-time_s)*1000); 
 
     if (REG_FORM=='H')
         Register << "Size:" << noElems << "\tInitially sorted:" 
-                << sortPercent << "%\tTime:" << time_s << "s " <<
+                << (int)sortLvl << "%\tTime:" << time_s << "s " <<
                 time_ms << "ms " << std::endl;
     else if (REG_FORM=='E')
         Register << time << std::endl;

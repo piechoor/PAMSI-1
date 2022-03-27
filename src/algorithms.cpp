@@ -1,62 +1,55 @@
 #include "algorithms.hh"
 
-void merge(int* arr, int idx_l, int idx_m, int idx_r)
+void merge(int* arr, int start, int mid, int end)
 {
-    int subArr1 = idx_m - idx_l + 1;
-    int subArr2 = idx_r - idx_m;
+    //temp arrays' lenghts
+    int lenLeft = mid - start + 1;
+    int lenRight = end - mid;
   
-    // Create temp arrs
-    int *leftArray = new int[subArr1],
-         *rightArray = new int[subArr2];
+    int *leftArr = new int[lenLeft]; //temp arrays
+    int *rightArr = new int[lenRight]; 
   
-    // Copy data to temp arrs leftArray[] and rightArray[]
-    for (int i = 0; i < subArr1; i++)
-        leftArray[i] = arr[idx_l + i];
-    for (int j = 0; j < subArr2; j++)
-        rightArray[j] = arr[idx_m + 1 + j];
+    //copying to temp arrays
+    for (int i = 0; i<lenLeft; ++i)
+        leftArr[i] = arr[start+i];
+    for (int i = 0; i<lenRight; ++i)
+        rightArr[i] = arr[mid+i+1];
   
-    int indexOfSubArrayOne = 0, // Initial index of first sub-array
-        indexOfSubArrayTwo = 0; // Initial index of second sub-array
-    int indexOfMergedArray = idx_l; // Initial index of merged arr
+    int iterLeft = 0, iterRight = 0, iterArr = start; //iterators for each of arryas 
   
-    // Merge the temp arrs back into arr[left..right]
-    while (indexOfSubArrayOne < subArr1 && indexOfSubArrayTwo < subArr2) {
-        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
-            arr[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
+    //writing to final array a smaller number of two arrays and iterating final array and
+    //the one that element is from
+    while (iterLeft < lenLeft && iterRight < lenRight) {
+        if (leftArr[iterLeft] <= rightArr[iterRight]) {
+            arr[iterArr] = leftArr[iterLeft];
+            ++iterLeft;
         }
         else {
-            arr[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
+            arr[iterArr] = rightArr[iterRight];
+            ++iterRight;
         }
-        indexOfMergedArray++;
+        ++iterArr;
     }
-    // Copy the remaining elements of
-    // left[], if there are any
-    while (indexOfSubArrayOne < subArr1) {
-        arr[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
+    
+    //above loop finishes when one of two arrays are copied, so below we copy the rest
+    //of the second one to the final array
+    while (iterLeft < lenLeft) {
+        arr[iterArr] = leftArr[iterLeft];
+        ++iterArr; ++iterLeft;
     }
-    // Copy the remaining elements of
-    // right[], if there are any
-    while (indexOfSubArrayTwo < subArr2) {
-        arr[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
+    while (iterRight < lenRight) {
+        arr[iterArr] = rightArr[iterRight];
+        ++iterArr; ++iterRight;
     }
 }
   
-// begin is for left index and end is
-// right index of the sub-array
-// of arr to be sorted */
-void mergeSort(int* arr, int begin, int end)
+//divides and merges current array recursively  
+void mergeSort(int* arr, int start, int end)
 {
-    if (begin >= end)
-        return; // Returns recursively
-  
-    int mid = begin + (end - begin) / 2;
-    mergeSort(arr, begin, mid);
-    mergeSort(arr, mid + 1, end);
-    merge(arr, begin, mid, end);
+    if (start >= end) 
+        return;
+    int mid = (start+end)/2;
+    mergeSort(arr, start, mid);
+    mergeSort(arr, mid+1, end);
+    merge(arr, start, mid, end);
 }

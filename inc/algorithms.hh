@@ -1,5 +1,5 @@
 #pragma once
 
-void merge(int array[], int const left, int const mid, int const right);
+void merge(int* arr, int start, int mid, int end);
 
-void mergeSort(int array[], int const begin, int const end);
+void mergeSort(int* arr, int start, int end);

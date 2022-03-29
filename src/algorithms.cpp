@@ -1,6 +1,5 @@
 #include "algorithms.hh"
 
-
 void swap(int *a, int *b) {
   int temp = *a;
   *a = *b;
@@ -64,56 +63,113 @@ void mergeSort(int* arr, int start, int end)
 }
 
 
-int partition(int* arr, int start, int end) {
-    int pivot = arr[end]; //pivot - element thats being use for comparison
-    int beforePivot = (start-1); //points at last element smaller/eq than pivot
+void doHeap(int* arr, int start, int end) {
 
-    for (int i=start; i<end; ++i) {
-        if (arr[i]<=pivot) { //if elem is smaller than pivot put it b4 arr[beforePivot]
-            beforePivot++;
-            swap(&arr[i],&arr[beforePivot]);
+    // int max = idx, leftChild = 2*idx+1, rightChild = 2*idx+2;
+    
+    // if (leftChild < size && arr[idx] < arr[leftChild])
+    //     max = leftChild;
+
+    // if (rightChild < size && arr[max] < arr[rightChild])
+    //     max = rightChild;
+
+    // if (max!=idx) {
+    //     swap(&arr[idx], &arr[max]);
+    //     heapify(arr, size, max);
+    // }
+    int save = arr[start];
+	while (start <= end /2) {
+		int k = 2* start;
+		while ( k < end && arr[k] <arr[k+1])
+			++k;
+		if( save >= arr[k])
+			break;
+		arr[start] = arr[k];
+		start = k;
+	}
+	arr[start] = save;
+}
+
+void heapSort(int* arr, int start, int end) {
+    //int size = end-start;
+    // for (int i=(end-1))/2-1; i>=start; --i)
+    //     doHeap(arr, size, i);
+
+    // for (int i=size-1; i>=start; --i) {
+    //     swap(&arr[start], &arr[i]);
+    //     --size;
+    //     doHeap(arr, size, start);
+    // }
+    int i;
+	for(int i = (end-1) / 2; i >= start; i--){
+		doHeap( arr, i , end-1);
+	}
+	for( i=end-1; i>start; i --){
+		swap( &arr[i], &arr[start]);
+		doHeap(arr, start, i-1);
+	}
+}
+
+void insertionSort(int* arr, int start, int end) {
+    for (int i=start; i<=end; ++i) {
+        int j=i;
+        while (j>start && arr[j-1] > arr[j]) {
+            swap(&arr[j], &arr[j-1]);
+            --j;
         }
     }
-    //puting pivot after all smaller elements
-    swap(&arr[beforePivot+1], &arr[end]);
-
-    return (beforePivot+1); //returning pivot index
-}
-
-void quickSort(int* arr, int start, int end) {
-    if (start < end) {
-        int pivot = partition(arr, start, end);
-
-        //std::cout << "\tstart:" << start<< "\tpiv:" << pivot<< "\tend:" << end << std::endl;
-        quickSort(arr, start, pivot-1);
-        quickSort(arr, pivot+1, end);
-    }
-    else return;
 } 
 
-void heapify(int* arr, int size, int idx) {
+void quickSort(int* arr, int start, int end) {
 
-    int max = idx, leftChild = 2*idx+1, rightChild = 2*idx+2;
-    
-    if (leftChild < size && arr[idx] < arr[leftChild])
-        max = leftChild;
+    int pivot = arr[(start+end)/2]; //choosing pivot in the middle
+    int s=start, e=end;
 
-    if (rightChild < size && arr[max] < arr[rightChild])
-        max = rightChild;
-
-    if (max!=idx) {
-        swap(&arr[idx], &arr[max]);
-        heapify(arr, size, max);
+    while (s<=e) {
+        while (arr[s]<pivot)
+            ++s;
+        while (arr[e]>pivot)
+            --e;
+        if (s<=e) {
+            swap(&arr[s], &arr[e]);
+            ++s; --e;
+        }
     }
+
+    if (start<e)
+        quickSort(arr,start,e);
+    if (end>s) 
+        quickSort(arr,s,end);
 }
 
-void heapSort(int* arr, int size) {
-    for (int i=size/2-1; i>=0; --i)
-        heapify(arr, size, i);
+void introSort(int* arr, int start, int end, int maxDepth) {
+    int size = end-start;
 
-    for (int i=size-1; i>=0; --i) {
-        swap(&arr[0], &arr[i]);
-        --size;
-        heapify(arr, size, 0);
+    if (size<16) {
+        //std::cout << "INSERTION activated" << size << std::endl;
+        insertionSort(arr, start, end);
+    }
+    // else if (maxDepth==0) {
+    //     heapSort(arr, start, end);
+    //     //std::cout << "HEAP activated " << size << std::endl;
+    // }
+    else {
+        //std::cout << "QUICK activated " << maxDepth << std::endl;
+        int pivot = arr[(start+end)/2]; //choosing pivot in the middle
+        int s=start, e=end;
+        while (s<=e) {
+            while (arr[s]<pivot)
+                ++s;
+            while (arr[e]>pivot)
+                --e;
+            if (s<=e) {
+                swap(&arr[s], &arr[e]);
+                ++s; --e;
+            }
+        }
+        if (start<e)
+            introSort(arr,start,e,maxDepth-1);
+        if (end>s) 
+            introSort(arr,s,end,maxDepth-1);
     }
 }

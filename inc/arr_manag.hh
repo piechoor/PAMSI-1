@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 #include <iostream>
-#include <algorithm>
+#include <math.h>
 #include <fstream>
 
 #define REGISTER_FILE "register.txt"

@@ -8,7 +8,7 @@ bool RunTest(int noElems, float sortLvl) {
 
     auto t_start = std::chrono::steady_clock::now();
 
-    for (int i=0; i<100; ++i) {
+    for (int i=0; i<1; ++i) {
         
         int* sortArr = InitArr(noElems, sortLvl);
 
@@ -17,10 +17,12 @@ bool RunTest(int noElems, float sortLvl) {
                 std::cout << i+1 << ". " << sortArr[i] << std::endl;
             }
         }
-
-        quickSort(sortArr, 0, noElems-1);
+        //sortByQuicksort(sortArr, 0, noElems-1);
+        //quickSort(sortArr, 0, noElems-1);
+        introSort(sortArr, 0, noElems-1, floor(log2(noElems))*2);
         //mergeSort(sortArr, 0, noElems-1);
         //heapSort(sortArr, noElems);
+        //insertionSort(sortArr, 0, noElems-1);
 
         if(SHOW_ARRAY) {
             for (int i=0; i<noElems; ++i) {
@@ -38,6 +40,8 @@ bool RunTest(int noElems, float sortLvl) {
     auto duration_t = t_end - t_start;
     float sortTime = std::chrono::duration <double> (duration_t).count();
     
+    std::cout << "Czas sortowania: " << sortTime << std::endl;
+
     WriteToReg(noElems, sortLvl, sortTime);
 
     return false;

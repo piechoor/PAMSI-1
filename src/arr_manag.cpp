@@ -1,10 +1,15 @@
 #include "arr_manag.hh"
 #include "algorithms.hh"
 
-#define SHOW_ARRAY true
+#define SHOW_ARRAY false
 
 bool RunTest(int noElems, float sortLvl) {
-    for (int i=0; i<1; ++i) {
+    
+
+    auto t_start = std::chrono::steady_clock::now();
+
+    for (int i=0; i<100; ++i) {
+        
         int* sortArr = InitArr(noElems, sortLvl);
 
         if(SHOW_ARRAY) {
@@ -13,28 +18,28 @@ bool RunTest(int noElems, float sortLvl) {
             }
         }
 
-        auto t_start = std::chrono::steady_clock::now();
-        
-        //quickSort(sortArr, 0, noElems-1);
+        quickSort(sortArr, 0, noElems-1);
         //mergeSort(sortArr, 0, noElems-1);
         //heapSort(sortArr, noElems);
-
-        auto t_end = std::chrono::steady_clock::now();
 
         if(SHOW_ARRAY) {
             for (int i=0; i<noElems; ++i) {
                 std::cout << i+1 << ". " << sortArr[i] << std::endl;
             }
+            if (!isSorted(sortArr, noElems))
+                std::cout << "\nTablica NIEposortowana!\n"; 
         }
-
-        auto duration_t = t_end - t_start;
-        float sortTime = std::chrono::duration <double> (duration_t).count();
+        if (!isSorted(sortArr, noElems))
+            std::cout << "\nTablica NIEposortowana!\n"; 
 
         delete[] sortArr;
-
-        WriteToReg(noElems, sortLvl, sortTime);
-
     }
+    auto t_end = std::chrono::steady_clock::now();
+    auto duration_t = t_end - t_start;
+    float sortTime = std::chrono::duration <double> (duration_t).count();
+    
+    WriteToReg(noElems, sortLvl, sortTime);
+
     return false;
 }
 
@@ -58,7 +63,7 @@ int* InitArr(int size, float sortLvl) {
         tosort[i] = -size+i;
     }
     for(int i=noSorted; i<size; ++i) {
-        tosort[i] = (rand() % size);
+        tosort[i] = (rand() % size)+1;
     }
 
     if (reverse) {
@@ -81,10 +86,18 @@ void WriteToReg(int noElems, float sortLvl, float time) {
     int time_ms = (int)((time-time_s)*1000); 
 
     if (REG_FORM_HUMAN)
-        Register << "Size:" << noElems << "\tInitially sorted:" 
-                << (int)sortLvl << "%\tTime:" << time_s << "s " <<
+        Register << "Size:" << noElems << " Initially sorted:" 
+                << (int)sortLvl << "% Time:" << time_s << "s " <<
                 time_ms << "ms " << std::endl;
-    else Register << time << std::endl;
+    else Register << time*1000 << std::endl;
 
     Register.close();
+}
+
+bool isSorted(int* arr, int size) {
+    for (int i=0; i<size-1; ++i) {
+        if (arr[i]>arr[i+1])
+            return false;
+    }
+    return true;
 }

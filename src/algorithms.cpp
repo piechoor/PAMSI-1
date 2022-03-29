@@ -1,5 +1,6 @@
 #include "algorithms.hh"
 
+
 void swap(int *a, int *b) {
   int temp = *a;
   *a = *b;
@@ -65,27 +66,30 @@ void mergeSort(int* arr, int start, int end)
 
 int partition(int* arr, int start, int end) {
     int pivot = arr[end]; //pivot - element thats being use for comparison
-    int beforePivot = start-1; //points at last element smaller/eq than pivot
+    int beforePivot = (start-1); //points at last element smaller/eq than pivot
 
     for (int i=start; i<end; ++i) {
         if (arr[i]<=pivot) { //if elem is smaller than pivot put it b4 arr[beforePivot]
-            ++beforePivot;
-            swap(&arr[beforePivot], &arr[i]);
+            beforePivot++;
+            swap(&arr[i],&arr[beforePivot]);
         }
     }
     //puting pivot after all smaller elements
     swap(&arr[beforePivot+1], &arr[end]);
-    
+
     return (beforePivot+1); //returning pivot index
 }
 
 void quickSort(int* arr, int start, int end) {
     if (start < end) {
         int pivot = partition(arr, start, end);
+
+        //std::cout << "\tstart:" << start<< "\tpiv:" << pivot<< "\tend:" << end << std::endl;
         quickSort(arr, start, pivot-1);
         quickSort(arr, pivot+1, end);
     }
-}
+    else return;
+} 
 
 void heapify(int* arr, int size, int idx) {
 

@@ -13,3 +13,5 @@ int* InitArr(int size, float sortLvl);
 
 void WriteToReg(int noElems, float sortLvl, float time);
 
+bool isSorted(int* arr, int size);
+

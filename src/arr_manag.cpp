@@ -1,48 +1,29 @@
 #include "arr_manag.hh"
 #include "algorithms.hh"
 
-#define SHOW_ARRAY false
-
 bool RunTest(int noElems, float sortLvl) {
-    
-
     auto t_start = std::chrono::steady_clock::now();
 
     for (int i=0; i<100; ++i) {
         
         int* sortArr = InitArr(noElems, sortLvl);
 
-        if(SHOW_ARRAY) {
-            for (int i=0; i<noElems; ++i) {
-                std::cout << i+1 << ". " << sortArr[i] << std::endl;
-            }
-        }
         //quickSort(sortArr, 0, noElems-1);
-        //introSort(sortArr, 0, noElems-1, floor(log2(noElems))*2);
+        introSort(sortArr, 0, noElems-1, floor(log2(noElems))*2);
         //mergeSort(sortArr, 0, noElems-1);
         //heapSort(sortArr, noElems);
-        insertionSort(sortArr, noElems);
-    
-        if(SHOW_ARRAY) {
-            for (int i=0; i<noElems; ++i) {
-                std::cout << i+1 << ". " << sortArr[i] << std::endl;
-            }
-            if (!isSorted(sortArr, noElems))
-                std::cout << "\nTablica NIEposortowana!\n"; 
-        }
+        //insertionSort(sortArr, noElems);
+
         if (!isSorted(sortArr, noElems))
-            std::cout << "\nTablica NIEposortowana!\n"; 
+            std::cerr << "\nTablica NIEposortowana!\n"; 
 
         delete[] sortArr;
     }
     auto t_end = std::chrono::steady_clock::now();
     auto duration_t = t_end - t_start;
     float sortTime = std::chrono::duration <double> (duration_t).count();
-    
-    std::cout << "Czas sortowania: " << sortTime << std::endl;
 
     WriteToReg(noElems, sortLvl, sortTime);
-
     return false;
 }
 

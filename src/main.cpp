@@ -4,17 +4,17 @@
 
 int main() {
 
-    const int arrSize[] = {32, 10000, 50000, 100000, 500000, 1000000};
-    const float sortLvl[] = {0, 25, 50, 75, 95, 99, 99.7, -100}; //sort level percentage
+    // const int arrSize[] = {32000, 10000, 50000, 100000, 500000, 1000000};
+    // const float sortLvl[] = {0, 25, 50, 75, 95, 99, 99.7, -100}; //sort level percentage
 
     //std::ofstream Register(REGISTER_FILE, std::ios_base::app);
 
-    for (int i=0; i<8; ++i) {
-        std::cout << "stopnien posortowania: " << sortLvl[i] << std::endl;
-        RunTest(arrSize[4], sortLvl[i]);
-    }
+    // for (int i=0; i<8; ++i) {
+    //     std::cout << "stopnien posortowania: " << sortLvl[i] << std::endl;
+    //     RunTest(arrSize[0], sortLvl[i]);
+    // }
 
-    //RunTest(arrSize[0], sortLvl[0]);
+    RunTest(100000, 0);
     
     //Register.close();
 

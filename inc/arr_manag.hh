@@ -4,8 +4,8 @@
 #include <math.h>
 #include <fstream>
 
-#define REGISTER_FILE "register.txt"
-#define REG_FORM_HUMAN true
+#define REGISTER_FILE "register_excel.txt"
+#define REG_FORM_HUMAN false
 
 bool RunTest(int noElems, float sortLvl);
 

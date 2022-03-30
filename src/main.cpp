@@ -4,19 +4,23 @@
 
 int main() {
 
-    // const int arrSize[] = {32000, 10000, 50000, 100000, 500000, 1000000};
-    // const float sortLvl[] = {0, 25, 50, 75, 95, 99, 99.7, -100}; //sort level percentage
+    const int arrSize[] = {10000, 50000, 100000, 500000, 1000000}; 
+    int sizeSIZE = sizeof(arrSize)/sizeof(arrSize[0]);
+    const float sortLvl[] = {-100, 0, 25, 50, 75, 95, 99, 99.7};
+    int sizeLVL = sizeof(sortLvl)/sizeof(sortLvl[0]);
 
-    //std::ofstream Register(REGISTER_FILE, std::ios_base::app);
+    std::ofstream Register(REGISTER_FILE, std::ios_base::app);
 
-    // for (int i=0; i<8; ++i) {
-    //     std::cout << "stopnien posortowania: " << sortLvl[i] << std::endl;
-    //     RunTest(arrSize[0], sortLvl[i]);
-    // }
+    //Register << "MERGESORT:" << std::endl;
+    //Register << "QUICKSORT" << std::endl;
+    Register << "INTROSORT" << std::endl;
 
-    RunTest(100000, 0);
-    
-    //Register.close();
+    for (int i=4; i<sizeSIZE; ++i) {
+        for (int j=0; j<sizeLVL; ++j)
+            RunTest(arrSize[i], sortLvl[j]);
+        Register << std::endl;
+    }
+    Register.close();
 
     return 0;
 }

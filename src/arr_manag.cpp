@@ -8,7 +8,7 @@ bool RunTest(int noElems, float sortLvl) {
 
     auto t_start = std::chrono::steady_clock::now();
 
-    for (int i=0; i<1; ++i) {
+    for (int i=0; i<100; ++i) {
         
         int* sortArr = InitArr(noElems, sortLvl);
 
@@ -17,13 +17,12 @@ bool RunTest(int noElems, float sortLvl) {
                 std::cout << i+1 << ". " << sortArr[i] << std::endl;
             }
         }
-        //sortByQuicksort(sortArr, 0, noElems-1);
         //quickSort(sortArr, 0, noElems-1);
-        introSort(sortArr, 0, noElems-1, floor(log2(noElems))*2);
+        //introSort(sortArr, 0, noElems-1, floor(log2(noElems))*2);
         //mergeSort(sortArr, 0, noElems-1);
         //heapSort(sortArr, noElems);
-        //insertionSort(sortArr, 0, noElems-1);
-
+        insertionSort(sortArr, noElems);
+    
         if(SHOW_ARRAY) {
             for (int i=0; i<noElems; ++i) {
                 std::cout << i+1 << ". " << sortArr[i] << std::endl;
@@ -71,14 +70,11 @@ int* InitArr(int size, float sortLvl) {
     }
 
     if (reverse) {
-        int i=0, j=size-1, temp=0;
-        while( i < j){
-            //swap
-            temp = tosort[i];
-            tosort[i] = tosort[j];
-            tosort[j] = temp;
-            i++;  j--;  
-        }
+        int *torev = new int[size];
+        for(int i=size-1, j=0; i>=0; --i, ++j)
+            torev[i]=tosort[j]+size;
+        delete[] tosort;
+        return torev;
     }
     return tosort;
 }

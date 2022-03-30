@@ -1,5 +1,9 @@
 #pragma once
-#include <iostream>
+
+//math and time for random pivot
+#include <math.h>
+#include <time.h>
+
 void swap(int *a, int *b);
 
 // MERGE SORT
@@ -10,10 +14,12 @@ void mergeSort(int* arr, int start, int end);
 int partition(int* arr, int start, int end);
 void quickSort(int* arr, int start, int end);
 
+//--TO INTROSORT--//
 //HEAPSORT
-void doHeap(int* arr, int start, int end);
-void heapSort(int* arr, int start, int end);
+void heapify(int* arr, int size, int idx);
+void heapSort(int* arr, int size);
+//INSERTION
+void insertionSort(int* arr, int size);
 
-void insertionSort(int* arr, int start, int end);
-
+//INTROSORT
 void introSort(int* arr, int start, int end, int maxDepth);

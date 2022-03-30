@@ -63,113 +63,89 @@ void mergeSort(int* arr, int start, int end)
 }
 
 
-void doHeap(int* arr, int start, int end) {
+int partition(int* arr, int start, int end) {
+    int pivot = arr[end]; //pivot - element thats being use for comparison
+    int beforePivot = start-1; //points at last element smaller/eq than pivot
 
-    // int max = idx, leftChild = 2*idx+1, rightChild = 2*idx+2;
+    for (int i=start; i<end; ++i) {
+        if (arr[i]<=pivot) { //if elem is smaller than pivot put it b4 arr[beforePivot]
+            ++beforePivot;
+            swap(&arr[beforePivot], &arr[i]);
+        }
+    }
+    //puting pivot after all smaller elements
+    swap(&arr[beforePivot+1], &arr[end]);
     
-    // if (leftChild < size && arr[idx] < arr[leftChild])
-    //     max = leftChild;
-
-    // if (rightChild < size && arr[max] < arr[rightChild])
-    //     max = rightChild;
-
-    // if (max!=idx) {
-    //     swap(&arr[idx], &arr[max]);
-    //     heapify(arr, size, max);
-    // }
-    int save = arr[start];
-	while (start <= end /2) {
-		int k = 2* start;
-		while ( k < end && arr[k] <arr[k+1])
-			++k;
-		if( save >= arr[k])
-			break;
-		arr[start] = arr[k];
-		start = k;
-	}
-	arr[start] = save;
+    return (beforePivot+1); //returning pivot index
 }
 
-void heapSort(int* arr, int start, int end) {
-    //int size = end-start;
-    // for (int i=(end-1))/2-1; i>=start; --i)
-    //     doHeap(arr, size, i);
-
-    // for (int i=size-1; i>=start; --i) {
-    //     swap(&arr[start], &arr[i]);
-    //     --size;
-    //     doHeap(arr, size, start);
-    // }
-    int i;
-	for(int i = (end-1) / 2; i >= start; i--){
-		doHeap( arr, i , end-1);
-	}
-	for( i=end-1; i>start; i --){
-		swap( &arr[i], &arr[start]);
-		doHeap(arr, start, i-1);
-	}
+int partition_rand(int* arr, int low, int high)
+{
+    //generating random number between in range of arr indexes
+    srand(time(NULL));
+    int random = low + rand() % (high - low);
+ 
+    //changing random number with future pivot (last element)
+    swap(&arr[random], &arr[high]);
+ 
+    return partition(arr, low, high);
+}
+ 
+void quickSort(int* arr, int start, int end) {
+    if (start < end) {
+        int pivot = partition_rand(arr, start, end);
+        quickSort(arr, start, pivot-1);
+        quickSort(arr, pivot+1, end);
+    }
 }
 
-void insertionSort(int* arr, int start, int end) {
-    for (int i=start; i<=end; ++i) {
+void heapify(int* arr, int size, int idx) {
+
+    int max = idx, leftChild = 2*idx+1, rightChild = 2*idx+2;
+    
+    if (leftChild < size && arr[idx] < arr[leftChild])
+        max = leftChild;
+
+    if (rightChild < size && arr[max] < arr[rightChild])
+        max = rightChild;
+
+    if (max!=idx) {
+        swap(&arr[idx], &arr[max]);
+        heapify(arr, size, max);
+    }
+}
+
+void heapSort(int* arr, int size) {
+    for (int i=size/2-1; i>=0; --i)
+        heapify(arr, size, i);
+
+    for (int i=size-1; i>=0; --i) {
+        swap(&arr[0], &arr[i]);
+        --size;
+        heapify(arr, size, 0);
+    }
+}
+
+void insertionSort(int* arr, int size) {
+    for (int i=1; i<size; ++i) {
         int j=i;
-        while (j>start && arr[j-1] > arr[j]) {
+        while (j>0 && arr[j-1] > arr[j]) {
             swap(&arr[j], &arr[j-1]);
             --j;
         }
     }
-} 
-
-void quickSort(int* arr, int start, int end) {
-
-    int pivot = arr[(start+end)/2]; //choosing pivot in the middle
-    int s=start, e=end;
-
-    while (s<=e) {
-        while (arr[s]<pivot)
-            ++s;
-        while (arr[e]>pivot)
-            --e;
-        if (s<=e) {
-            swap(&arr[s], &arr[e]);
-            ++s; --e;
-        }
-    }
-
-    if (start<e)
-        quickSort(arr,start,e);
-    if (end>s) 
-        quickSort(arr,s,end);
 }
 
 void introSort(int* arr, int start, int end, int maxDepth) {
-    int size = end-start;
-
-    if (size<16) {
-        //std::cout << "INSERTION activated" << size << std::endl;
-        insertionSort(arr, start, end);
-    }
-    // else if (maxDepth==0) {
-    //     heapSort(arr, start, end);
-    //     //std::cout << "HEAP activated " << size << std::endl;
-    // }
-    else {
-        //std::cout << "QUICK activated " << maxDepth << std::endl;
-        int pivot = arr[(start+end)/2]; //choosing pivot in the middle
-        int s=start, e=end;
-        while (s<=e) {
-            while (arr[s]<pivot)
-                ++s;
-            while (arr[e]>pivot)
-                --e;
-            if (s<=e) {
-                swap(&arr[s], &arr[e]);
-                ++s; --e;
-            }
-        }
-        if (start<e)
-            introSort(arr,start,e,maxDepth-1);
-        if (end>s) 
-            introSort(arr,s,end,maxDepth-1);
+    int size = end-start+1;
+    
+    if (size<16)
+        insertionSort(&arr[start], size);
+    else if (maxDepth<=0)
+        heapSort(&arr[start], size);
+    else if (start < end) {
+        int pivot = partition_rand(arr, start, end);
+        introSort(arr, start, pivot-1, maxDepth-1);
+        introSort(arr, pivot+1, end, maxDepth-1);
     }
 }

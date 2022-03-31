@@ -15,7 +15,7 @@ int main() {
     //Register << "QUICKSORT" << std::endl;
     Register << "INTROSORT" << std::endl;
 
-    for (int i=4; i<sizeSIZE; ++i) {
+    for (int i=0; i<sizeSIZE; ++i) {
         for (int j=0; j<sizeLVL; ++j)
             RunTest(arrSize[i], sortLvl[j]);
         Register << std::endl;

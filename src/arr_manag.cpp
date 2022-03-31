@@ -2,6 +2,7 @@
 #include "algorithms.hh"
 
 bool RunTest(int noElems, float sortLvl) {
+    //measuring time of sorting 100 arrays
     auto t_start = std::chrono::steady_clock::now();
 
     for (int i=0; i<100; ++i) {
@@ -44,10 +45,10 @@ int* InitArr(int size, float sortLvl) {
     int *tosort = new int[size];
     int noSorted = sortLvl*size*0.01;
     for(int i=0; i<noSorted; ++i) {
-        tosort[i] = -size+i;
+        tosort[i] = -i; //putting negative (sorted) numbers
     }
     for(int i=noSorted; i<size; ++i) {
-        tosort[i] = (rand() % size)+1;
+        tosort[i] = (rand() % size)+1; 
     }
 
     if (reverse) {

@@ -51,7 +51,8 @@ void merge(int* arr, int start, int mid, int end)
     delete[] leftArr; delete[] rightArr;
 }
   
-//divides and merges passed current array recursively  
+//divides array to single elements and merges merges them 
+//in the right order recursively - using merge()  
 void mergeSort(int* arr, int start, int end)
 {
     if (start < end) {
@@ -61,7 +62,6 @@ void mergeSort(int* arr, int start, int end)
         merge(arr, start, mid, end);
     }
 }
-
 
 int partition(int* arr, int start, int end) {
     int pivot = arr[end]; //pivot - element thats being use for comparison
@@ -79,6 +79,7 @@ int partition(int* arr, int start, int end) {
     return (beforePivot+1); //returning pivot index
 }
 
+//changes random number with last element (future pivot in partition())
 int partition_rand(int* arr, int low, int high)
 {
     //generating random number between in range of arr indexes
@@ -99,26 +100,27 @@ void quickSort(int* arr, int start, int end) {
     }
 }
 
-void heapify(int* arr, int size, int idx) {
-
-    int max = idx, leftChild = 2*idx+1, rightChild = 2*idx+2;
-    
-    if (leftChild < size && arr[idx] < arr[leftChild])
+void heapify(int* arr, int size, int parent) {
+    //checking if any children is greater than its parent
+    int max = parent, leftChild = 2*parent+1, rightChild = 2*parent+2;
+    if (leftChild < size && arr[parent] < arr[leftChild])
         max = leftChild;
-
     if (rightChild < size && arr[max] < arr[rightChild])
         max = rightChild;
 
-    if (max!=idx) {
-        swap(&arr[idx], &arr[max]);
+    //if yes swaping that child with parent and going to lower layer
+    if (max!=parent) {
+        swap(&arr[parent], &arr[max]);
         heapify(arr, size, max);
     }
 }
 
 void heapSort(int* arr, int size) {
+    //creates max heap - heap in which every parent its greater than its children
     for (int i=size/2-1; i>=0; --i)
         heapify(arr, size, i);
 
+    //changing first with the last element, decreasing the heap size and reparing it
     for (int i=size-1; i>=0; --i) {
         swap(&arr[0], &arr[i]);
         --size;
@@ -139,10 +141,13 @@ void insertionSort(int* arr, int size) {
 void introSort(int* arr, int start, int end, int maxDepth) {
     int size = end-start+1;
     
+    //if array has less than 16 elements use insertion sort
     if (size<16)
         insertionSort(&arr[start], size);
+    //if recursion is on its max depth use heap sort
     else if (maxDepth<=0)
         heapSort(&arr[start], size);
+    //in every other case use quicksort
     else if (start < end) {
         int pivot = partition_rand(arr, start, end);
         introSort(arr, start, pivot-1, maxDepth-1);

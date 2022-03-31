@@ -10,16 +10,17 @@ void swap(int *a, int *b);
 void merge(int* arr, int start, int mid, int end);
 void mergeSort(int* arr, int start, int end);
 
-//QUICKSORT
+// QUICKSORT
 int partition(int* arr, int start, int end);
 void quickSort(int* arr, int start, int end);
 
-//--TO INTROSORT--//
+//-----------TO INTROSORT-----------//
 //HEAPSORT
-void heapify(int* arr, int size, int idx);
+void heapify(int* arr, int size, int parent);
 void heapSort(int* arr, int size);
 //INSERTION
 void insertionSort(int* arr, int size);
+//----------------------------------//
 
-//INTROSORT
+// INTROSORT
 void introSort(int* arr, int start, int end, int maxDepth);
